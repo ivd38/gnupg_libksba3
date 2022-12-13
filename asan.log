@@ -1,0 +1,62 @@
+=================================================================
+==233578==ERROR: AddressSanitizer: heap-buffer-overflow on address 0x602000000031 at pc 0x7fd7e17b959d bp 0x7fff17920d50 sp 0x7fff179204f8
+WRITE of size 1035 at 0x602000000031 thread T0
+    #0 0x7fd7e17b959c in __interceptor_fread ../../../../src/libsanitizer/sanitizer_common/sanitizer_common_interceptors.inc:989
+    #1 0x7fd7e169aa67 in _ksba_reader_read (/crypto/libksba-1.6.1/src/.libs/libksba.so.8+0x1ca67)
+    #2 0x7fd7e16e05e0 in read_buffer (/crypto/libksba-1.6.1/src/.libs/libksba.so.8+0x625e0)
+    #3 0x7fd7e16e373a in _ksba_cms_parse_signed_data_part_1 (/crypto/libksba-1.6.1/src/.libs/libksba.so.8+0x6573a)
+    #4 0x7fd7e16d9489 in ct_parse_signed_data (/crypto/libksba-1.6.1/src/.libs/libksba.so.8+0x5b489)
+    #5 0x7fd7e16d04db in _ksba_cms_parse (/crypto/libksba-1.6.1/src/.libs/libksba.so.8+0x524db)
+    #6 0x7fd7e1698079 in ksba_cms_parse (/crypto/libksba-1.6.1/src/.libs/libksba.so.8+0x1a079)
+    #7 0x560bee6d3fd4 in one_file (/crypto/libksba-1.6.1/tests/t-cms-parser+0x4fd4)
+    #8 0x560bee6d5135 in main (/crypto/libksba-1.6.1/tests/t-cms-parser+0x6135)
+    #9 0x7fd7e148d082 in __libc_start_main ../csu/libc-start.c:308
+    #10 0x560bee6d272d in _start (/crypto/libksba-1.6.1/tests/t-cms-parser+0x372d)
+
+0x602000000031 is located 0 bytes to the right of 1-byte region [0x602000000030,0x602000000031)
+allocated by thread T0 here:
+    #0 0x7fd7e185b808 in __interceptor_malloc ../../../../src/libsanitizer/asan/asan_malloc_linux.cc:144
+    #1 0x7fd7e1718e98 in _ksba_malloc (/crypto/libksba-1.6.1/src/.libs/libksba.so.8+0x9ae98)
+    #2 0x7fd7e16e36cb in _ksba_cms_parse_signed_data_part_1 (/crypto/libksba-1.6.1/src/.libs/libksba.so.8+0x656cb)
+    #3 0x7fd7e16d9489 in ct_parse_signed_data (/crypto/libksba-1.6.1/src/.libs/libksba.so.8+0x5b489)
+    #4 0x7fd7e16d04db in _ksba_cms_parse (/crypto/libksba-1.6.1/src/.libs/libksba.so.8+0x524db)
+    #5 0x7fd7e1698079 in ksba_cms_parse (/crypto/libksba-1.6.1/src/.libs/libksba.so.8+0x1a079)
+    #6 0x560bee6d3fd4 in one_file (/crypto/libksba-1.6.1/tests/t-cms-parser+0x4fd4)
+    #7 0x560bee6d5135 in main (/crypto/libksba-1.6.1/tests/t-cms-parser+0x6135)
+    #8 0x7fd7e148d082 in __libc_start_main ../csu/libc-start.c:308
+
+SUMMARY: AddressSanitizer: heap-buffer-overflow ../../../../src/libsanitizer/sanitizer_common/sanitizer_common_interceptors.inc:989 in __interceptor_fread
+Shadow bytes around the buggy address:
+  0x0c047fff7fb0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x0c047fff7fc0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x0c047fff7fd0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x0c047fff7fe0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x0c047fff7ff0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+=>0x0c047fff8000: fa fa 00 fa fa fa[01]fa fa fa fa fa fa fa fa fa
+  0x0c047fff8010: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x0c047fff8020: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x0c047fff8030: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x0c047fff8040: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x0c047fff8050: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+Shadow byte legend (one shadow byte represents 8 application bytes):
+  Addressable:           00
+  Partially addressable: 01 02 03 04 05 06 07 
+  Heap left redzone:       fa
+  Freed heap region:       fd
+  Stack left redzone:      f1
+  Stack mid redzone:       f2
+  Stack right redzone:     f3
+  Stack after return:      f5
+  Stack use after scope:   f8
+  Global redzone:          f9
+  Global init order:       f6
+  Poisoned by user:        f7
+  Container overflow:      fc
+  Array cookie:            ac
+  Intra object redzone:    bb
+  ASan internal:           fe
+  Left alloca redzone:     ca
+  Right alloca redzone:    cb
+  Shadow gap:              cc
+==233578==ABORTING
+
